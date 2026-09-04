@@ -1,5 +1,6 @@
 import { useState } from "react";
 import TodoList, { type Filter } from "./components/TodoList";
+import { useTodos } from "./hooks/useTodos";
 import type { Todo } from "./types";
 
 function generateId(): string {
@@ -7,9 +8,7 @@ function generateId(): string {
 }
 
 export default function App() {
-  const [todos, setTodos] = useState<Todo[]>([
-    { id: generateId(), title: "Example task", completed: false },
-  ]);
+  const [todos, setTodos] = useTodos();
   const [activeFilter, setActiveFilter] = useState<Filter>("all");
 
   const clearCompleted = () => {
