@@ -1,18 +1,17 @@
 import { useState } from "react";
-import TodoList, { type Filter } from "./components/TodoList";
+import TodoList from "./components/TodoList";
 import { useTodos } from "./hooks/useTodos";
-import type { Todo } from "./types";
-
-function generateId(): string {
-  return Math.random().toString(36).slice(2, 10);
-}
 
 export default function App() {
   const [todos, setTodos] = useTodos();
-  const [activeFilter, setActiveFilter] = useState<Filter>("all");
+  const [inputValue, setInputValue] = useState("");
+  const [activeFilter, setActiveFilter] = useState<"all" | "active" | "completed">("all");
 
-  const clearCompleted = () => {
-    setTodos((prev) => prev.filter((t) => !t.completed));
+  const addTodo = () => {
+    const title = inputValue.trim();
+    if (!title) return;
+    setTodos((prev) => [...prev, { id: crypto.randomUUID(), title, completed: false }]);
+    setInputValue("");
   };
 
   const toggleTodo = (id: string) => {
@@ -23,15 +22,42 @@ export default function App() {
     );
   };
 
+  const deleteTodo = (id: string) => {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  };
+
+  const clearCompleted = () => {
+    setTodos((prev) => prev.filter((t) => !t.completed));
+  };
+
   return (
     <main className="app">
       <h1>Todo App</h1>
+      <form
+        className="todo-input"
+        onSubmit={(e) => {
+          e.preventDefault();
+          addTodo();
+        }}
+      >
+        <input
+          type="text"
+          className="todo-input__field"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="What needs to be done?"
+        />
+        <button type="submit" className="todo-input__button">
+          Add
+        </button>
+      </form>
       <TodoList
         todos={todos}
         filter={activeFilter}
         onFilterChange={setActiveFilter}
         onClearCompleted={clearCompleted}
         onToggleTodo={toggleTodo}
+        onDelete={deleteTodo}
       />
     </main>
   );

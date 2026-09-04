@@ -1,13 +1,15 @@
-import { type Todo } from "../types";
+import type { Todo } from "../types";
+import TodoItem from "./TodoItem";
 
 export type Filter = "all" | "active" | "completed";
 
 interface TodoListProps {
   todos: Todo[];
-  filter: Filter;
-  onFilterChange: (filter: Filter) => void;
-  onClearCompleted: () => void;
+  filter?: Filter;
+  onFilterChange?: (filter: Filter) => void;
+  onClearCompleted?: () => void;
   onToggleTodo?: (id: string) => void;
+  onDelete?: (id: string) => void;
 }
 
 export default function TodoList({
@@ -16,58 +18,63 @@ export default function TodoList({
   onFilterChange,
   onClearCompleted,
   onToggleTodo,
+  onDelete,
 }: TodoListProps) {
+  const f = filter ?? "all";
+  const onFilter = onFilterChange ?? (() => {});
   const filteredTodos = todos.filter((todo) => {
-    if (filter === "active") return !todo.completed;
-    if (filter === "completed") return todo.completed;
+    if (f === "active") return !todo.completed;
+    if (f === "completed") return todo.completed;
     return true;
   });
 
+  const activeCount = todos.filter((t) => !t.completed).length;
   const completedCount = todos.filter((t) => t.completed).length;
 
   return (
     <div className="todo-list">
-      <ul className="todo-list__items">
-        {filteredTodos.map((todo) => (
-          <li key={todo.id} className="todo-list__item">
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              onChange={() => onToggleTodo?.(todo.id)}
-              data-testid={`checkbox-${todo.id}`}
+      {filteredTodos.length > 0 && (
+        <ul className="todo-list__items">
+          {filteredTodos.map((todo) => (
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onToggle={onToggleTodo}
+              onDelete={onDelete}
             />
-            <span className="todo-list__title">{todo.title}</span>
-          </li>
-        ))}
-      </ul>
+          ))}
+        </ul>
+      )}
       <p className="todo-list__count">
-        {filteredTodos.length} {filteredTodos.length === 1 ? "item" : "items"}{" "}
+        {activeCount} {activeCount === 1 ? "item" : "items"}{" "}
         left
       </p>
-      <div className="todo-filters">
-        <button
-          className={`todo-filters__btn${filter === "all" ? " todo-filters__btn--active" : ""}`}
-          onClick={() => onFilterChange("all")}
-          data-testid="filter-all"
-        >
-          All
-        </button>
-        <button
-          className={`todo-filters__btn${filter === "active" ? " todo-filters__btn--active" : ""}`}
-          onClick={() => onFilterChange("active")}
-          data-testid="filter-active"
-        >
-          Active
-        </button>
-        <button
-          className={`todo-filters__btn${filter === "completed" ? " todo-filters__btn--active" : ""}`}
-          onClick={() => onFilterChange("completed")}
-          data-testid="filter-completed"
-        >
-          Completed
-        </button>
-      </div>
-      {completedCount > 0 && (
+      {onFilterChange && (
+        <div className="todo-filters">
+          <button
+            className={`todo-filters__btn${f === "all" ? " todo-filters__btn--active" : ""}`}
+            onClick={() => onFilter("all")}
+            data-testid="filter-all"
+          >
+            All
+          </button>
+          <button
+            className={`todo-filters__btn${f === "active" ? " todo-filters__btn--active" : ""}`}
+            onClick={() => onFilter("active")}
+            data-testid="filter-active"
+          >
+            Active
+          </button>
+          <button
+            className={`todo-filters__btn${f === "completed" ? " todo-filters__btn--active" : ""}`}
+            onClick={() => onFilter("completed")}
+            data-testid="filter-completed"
+          >
+            Completed
+          </button>
+        </div>
+      )}
+      {onClearCompleted && completedCount > 0 && (
         <button
           className="clear-completed"
           onClick={onClearCompleted}
