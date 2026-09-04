@@ -1,5 +1,7 @@
 # test-todo-app-pj-army
 
+Changed on master to create a conflict.
+
 A [Turborepo](https://turborepo.com) monorepo skeleton for the todo app. This repository currently
 contains the monorepo shell only — the React frontend and the NestJS backend are added by their own
 tickets.
