@@ -1,7 +1,5 @@
 # test-todo-app-pj-army
 
-Changed on master to create a conflict.
-
 A [Turborepo](https://turborepo.com) monorepo for the todo app. It currently contains the monorepo
 shell and the React frontend (`apps/web`); the NestJS backend is added by its own ticket.
 
@@ -30,7 +28,6 @@ pnpm install
 ```
 
 See [`apps/web/README.md`](apps/web/README.md) for the frontend.
-
 Any new workspace dropped into `apps/*` or `packages/*` is picked up automatically by pnpm and by
 `turbo run <task>`; it only needs a `package.json` with the matching scripts.
 
