@@ -1,8 +1,38 @@
+import { useState } from "react";
+import TodoList, { type Filter } from "./components/TodoList";
+import { useTodos } from "./hooks/useTodos";
+import type { Todo } from "./types";
+
+function generateId(): string {
+  return Math.random().toString(36).slice(2, 10);
+}
+
 export default function App() {
+  const [todos, setTodos] = useTodos();
+  const [activeFilter, setActiveFilter] = useState<Filter>("all");
+
+  const clearCompleted = () => {
+    setTodos((prev) => prev.filter((t) => !t.completed));
+  };
+
+  const toggleTodo = (id: string) => {
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
+      ),
+    );
+  };
+
   return (
     <main className="app">
       <h1>Todo App</h1>
-      <p>The React app is up. Features land in follow-up tickets.</p>
+      <TodoList
+        todos={todos}
+        filter={activeFilter}
+        onFilterChange={setActiveFilter}
+        onClearCompleted={clearCompleted}
+        onToggleTodo={toggleTodo}
+      />
     </main>
   );
 }
