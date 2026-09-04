@@ -10,7 +10,7 @@ export default function App() {
   const addTodo = () => {
     const title = inputValue.trim();
     if (!title) return;
-    setTodos((prev) => [...prev, { id: crypto.randomUUID(), title, completed: false }]);
+    setTodos((prev) => [{ id: crypto.randomUUID(), title, completed: false }, ...prev]);
     setInputValue("");
   };
 

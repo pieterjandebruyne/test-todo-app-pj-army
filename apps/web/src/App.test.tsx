@@ -61,13 +61,14 @@ describe("App", () => {
     await userEvent.type(input, "First todo{enter}");
     await userEvent.type(input, "Second todo{enter}");
 
-    // Delete the first todo
+    // Delete the first todo in the list (most recently added)
     const deleteButtons = screen.getAllByRole("button", { name: /Delete/i });
     await userEvent.click(deleteButtons[0]);
 
-    expect(screen.getByText("Second todo")).toBeInTheDocument();
-    // First todo should be gone
-    expect(screen.queryByText("First todo")).not.toBeInTheDocument();
+    // "First todo" should remain (it was added first, appears last)
+    expect(screen.getByText("First todo")).toBeInTheDocument();
+    // "Second todo" should be gone (it was the newest, appeared first)
+    expect(screen.queryByText("Second todo")).not.toBeInTheDocument();
   });
 
   it("shows the correct active count", async () => {
@@ -263,6 +264,21 @@ describe("App", () => {
 
       // After reload, todos should still be there (from localStorage)
       expect(screen.getByText("Persist me")).toBeInTheDocument();
+    });
+  });
+
+  describe("new todo ordering", () => {
+    it("adds new todos to the top of the list", async () => {
+      render(<App />);
+
+      const input = screen.getByPlaceholderText("What needs to be done?");
+      await userEvent.type(input, "first{enter}");
+      await userEvent.type(input, "second{enter}");
+
+      const items = screen.getAllByRole("listitem");
+      // Most recently added todo should be first
+      expect(items[0]).toHaveTextContent("second");
+      expect(items[1]).toHaveTextContent("first");
     });
   });
 
