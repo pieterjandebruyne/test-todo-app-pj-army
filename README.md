@@ -2,9 +2,8 @@
 
 Changed on master to create a conflict.
 
-A [Turborepo](https://turborepo.com) monorepo skeleton for the todo app. This repository currently
-contains the monorepo shell only — the React frontend and the NestJS backend are added by their own
-tickets.
+A [Turborepo](https://turborepo.com) monorepo for the todo app. It currently contains the monorepo
+shell and the React frontend (`apps/web`); the NestJS backend is added by its own ticket.
 
 ## Prerequisites
 
@@ -21,13 +20,16 @@ pnpm install
 
 ```
 .
-├── apps/                        # applications (web, api, …) — added by follow-up tickets
+├── apps/
+│   └── web/                     # @todo-app/web — Vite + React + TypeScript frontend
 ├── packages/                    # shared packages
 │   └── typescript-config/       # @repo/typescript-config — shared tsconfig base
 ├── package.json                 # root scripts, delegating to turbo
 ├── pnpm-workspace.yaml          # workspace globs: apps/*, packages/*
 └── turbo.json                   # turbo task pipeline
 ```
+
+See [`apps/web/README.md`](apps/web/README.md) for the frontend.
 
 Any new workspace dropped into `apps/*` or `packages/*` is picked up automatically by pnpm and by
 `turbo run <task>`; it only needs a `package.json` with the matching scripts.
@@ -49,7 +51,7 @@ A task that no workspace defines is simply a no-op — turbo exits 0 with "No ta
 To run a task for a single workspace:
 
 ```bash
-pnpm turbo run build --filter=@repo/typescript-config
+pnpm turbo run build --filter=@todo-app/web
 ```
 
 ## Shared TypeScript config
@@ -79,7 +81,9 @@ Add the package as a workspace dependency first:
 
 - **Package manager: pnpm.** `pnpm-workspace.yaml` is the idiomatic Turborepo workspace setup and the
   version is pinned so every machine and CI run resolves identically. `pnpm-lock.yaml` is committed.
-- **Shared packages are namespaced `@repo/*`** and stay `private`.
+- **Shared packages are namespaced `@repo/*`**, applications `@todo-app/*`; both stay `private`.
+- **Dependency install scripts are opt-in.** pnpm blocks them by default; the ones this repo needs
+  are listed under `allowBuilds` in `pnpm-workspace.yaml`.
 - **Default branch is `master`.** Work happens on branches cut from `master` and lands via pull request.
 - Build output (`dist/`, `build/`), `node_modules/` and `.turbo/` are git-ignored; `.env*` files are
   ignored except `.env.example`.
