@@ -19,3 +19,50 @@ body {
   max-width: 40rem;
   padding: 2rem 1rem;
 }
+
+.todo-list__count {
+  margin: 0.5rem 0;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.todo-filters {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.todo-filters__btn {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #333;
+}
+
+.todo-filters__btn:hover {
+  background: #f0f0f0;
+}
+
+.todo-filters__btn--active {
+  background: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+.clear-completed {
+  padding: 0.5rem 1rem;
+  border: 1px solid #dc3545;
+  border-radius: 4px;
+  background: #fff;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.clear-completed:hover {
+  background: #dc3545;
+  color: #fff;
+}
