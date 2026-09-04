@@ -1,10 +1,11 @@
 import { useState } from "react";
-import type { Todo } from "./types";
 import TodoList from "./components/TodoList";
+import { useTodos } from "./hooks/useTodos";
 
 export default function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useTodos();
   const [inputValue, setInputValue] = useState("");
+  const [activeFilter, setActiveFilter] = useState<"all" | "active" | "completed">("all");
 
   const addTodo = () => {
     const title = inputValue.trim();
@@ -23,6 +24,10 @@ export default function App() {
 
   const deleteTodo = (id: string) => {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  };
+
+  const clearCompleted = () => {
+    setTodos((prev) => prev.filter((t) => !t.completed));
   };
 
   return (
@@ -46,7 +51,14 @@ export default function App() {
           Add
         </button>
       </form>
-      <TodoList todos={todos} onToggle={toggleTodo} onDelete={deleteTodo} />
+      <TodoList
+        todos={todos}
+        filter={activeFilter}
+        onFilterChange={setActiveFilter}
+        onClearCompleted={clearCompleted}
+        onToggleTodo={toggleTodo}
+        onDelete={deleteTodo}
+      />
     </main>
   );
 }
