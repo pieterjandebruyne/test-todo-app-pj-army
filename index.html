@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chaos Todo — The Todo App That Defies Logic</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header with Karma display -->
+    <header class="app-header">
+      <h1 class="app-title">
+        <span class="title-icon">🌀</span>
+        Chaos Todo
+        <span class="subtitle">The todo app that defies logic</span>
+      </h1>
+      <div class="karma-display" id="karmaDisplay">
+        <span class="karma-icon">✨</span>
+        <span class="karma-count" id="karmaCount">0</span>
+        <span class="karma-label">karma</span>
+      </div>
+    </header>
+
+    <!-- Chaos Mode Toggle -->
+    <section class="chaos-section" id="chaosSection">
+      <button
+        class="chaos-toggle"
+        id="chaosToggle"
+        aria-pressed="false"
+        aria-label="Toggle Chaos Mode"
+      >
+        <span class="chaos-icon">🎲</span>
+        <span class="chaos-text">Chaos Mode</span>
+        <span class="chaos-status" id="chaosStatus">OFF</span>
+      </button>
+      <p class="chaos-hint" id="chaosHint">
+        When enabled, your todos will be joyfully randomized on every action!
+      </p>
+    </section>
+
+    <!-- Add Todo Form -->
+    <section class="add-todo-section">
+      <form class="add-todo-form" id="addTodoForm">
+        <input
+          type="text"
+          id="todoInput"
+          class="todo-input"
+          placeholder="What needs to be done? (e.g., 'Feed the cats')"
+          maxlength="200"
+          autocomplete="off"
+          aria-label="New todo text"
+        >
+        <div class="input-hints">
+          <span class="hint" title="Todo decays after 24 hours">
+            ⏳ Decays in 24h
+          </span>
+          <span class="hint" title="You get karma points for completing todos">
+            ✨ Earn karma
+          </span>
+        </div>
+        <button type="submit" class="add-button" aria-label="Add todo">
+          <span class="add-icon">+</span>
+          Add
+        </button>
+      </form>
+    </section>
+
+    <!-- Filter Tabs -->
+    <nav class="filter-tabs" id="filterTabs" role="tablist">
+      <button
+        class="filter-tab active"
+        data-filter="all"
+        role="tab"
+        aria-selected="true"
+        id="tab-all"
+      >
+        All <span class="filter-count" id="countAll">0</span>
+      </button>
+      <button
+        class="filter-tab"
+        data-filter="active"
+        role="tab"
+        aria-selected="false"
+        id="tab-active"
+      >
+        Active <span class="filter-count" id="countActive">0</span>
+      </button>
+      <button
+        class="filter-tab"
+        data-filter="completed"
+        role="tab"
+        aria-selected="false"
+        id="tab-completed"
+      >
+        Done <span class="filter-count" id="countCompleted">0</span>
+      </button>
+      <button
+        class="filter-tab"
+        data-filter="expired"
+        role="tab"
+        aria-selected="false"
+        id="tab-expired"
+      >
+        Expired <span class="filter-count" id="countExpired">0</span>
+      </button>
+    </nav>
+
+    <!-- Todo List -->
+    <main class="todo-list-container" id="todoListContainer">
+      <ul class="todo-list" id="todoList" role="list" aria-label="Todo list">
+        <!-- Todos rendered here -->
+      </ul>
+      <div class="empty-state" id="emptyState" style="display: none;">
+        <span class="empty-icon">🎉</span>
+        <p class="empty-message">No todos here!</p>
+        <p class="empty-submessage">Add one above to get started.</p>
+      </div>
+    </main>
+
+    <!-- Achievements Panel -->
+    <section class="achievements-section" id="achievementsSection">
+      <button
+        class="achievements-toggle"
+        id="achievementsToggle"
+        aria-expanded="false"
+        aria-controls="achievementsPanel"
+      >
+        <span class="achievements-icon">🏆</span>
+        <span class="achievements-label">Achievements</span>
+        <span class="achievements-badge" id="achievementsBadge"></span>
+      </button>
+      <div class="achievements-panel" id="achievementsPanel" style="display: none;">
+        <h3 class="achievements-title">Achievement Unlocked!</h3>
+        <div class="achievements-list" id="achievementsList">
+          <!-- Achievements rendered here -->
+        </div>
+        <p class="achievements-hint">Complete todos to earn karma and unlock achievements!</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p class="footer-text">
+        Built with 🌀 chaos, ⏳ decay, and ✨ karma
+      </p>
+      <p class="footer-decay-info" id="decayInfo">
+        Todos decay over 24 hours — complete them before they expire!
+      </p>
+    </footer>
+  </div>
+
+  <!-- Achievement Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
