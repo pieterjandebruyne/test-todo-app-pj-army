@@ -1,0 +1,12 @@
+{
+  "name": "test-todo-app-pj-army",
+  "version": "1.0.0",
+  "description": "A small todo app used as a playground for pj-army",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
